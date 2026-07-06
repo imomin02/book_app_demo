@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 function BookDetails() {
 
@@ -8,6 +9,8 @@ function BookDetails() {
 
     const [book, setBook] = useState(null);
 
+    const navigate = useNavigate();
+    
     useEffect(() => {
         api
             .get(`/public/books/${id}`)
@@ -93,10 +96,9 @@ function BookDetails() {
 
       </div>
 
-      <button onClick={() => window.history.back()} className="mt-10 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-        Go Back
+      <button onClick={() => navigate(-1)} className="mt-10 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        Back
       </button>
-
 
     </div>
   </div>

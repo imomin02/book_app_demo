@@ -4,9 +4,9 @@ import api from "../services/api";
 import React from 'react'
 import BookCard from '../components/BookCard'
 import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-
-function Home() {
+function Home({ bookmarks, setBookmarks }) {
 
     const [search, setSearch] = useState("");
 
@@ -30,6 +30,10 @@ function Home() {
 
     }, [page]);
 
+    useEffect(() => {
+        console.log(bookmarks);
+    }, [bookmarks]);
+
     const filteredBooks = books.filter((book) =>
         book.volumeInfo?.title
             ?.toLowerCase()
@@ -44,12 +48,36 @@ function Home() {
         setSearchParams({ page: page - 1 });
     };
 
+    // const addBookmark = (book) => {
+
+    //     // const exists = bookmarks.find((item) => item.id === book.id);
+    //         const exists = bookmarks.includes(book.id);
+
+    //     if (exists) {
+    //         return;
+    //     }
+
+    //     setBookmarks([...bookmarks, book.id]);
+    // }
+
+    const toggleBookmark = (book) => {
+
+        if (bookmarks.includes(book.id)) {
+            const updatedBookmarks = bookmarks.filter(
+                (id) => id !== book.id
+            );
+            setBookmarks(updatedBookmarks);
+        } else {
+            setBookmarks([...bookmarks, book.id]);
+        }
+
+    };
+
     return (
         <>
 
             <div className="max-w-7xl mx-auto p-6">
                 <h2 className="text-4xl font-bold text-center mb-8">📚 Books Explorer</h2>
-                <p>Searching: {search}</p>
 
                 <input
                     type="text"
@@ -59,6 +87,14 @@ function Home() {
                     className="w-full border rounded-lg px-4 py-3 mb-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
 
+                <div className="flex justify-end" >
+                    <Link
+                        to="/bookmarks"
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                        📚 View Bookmarks
+                    </Link>
+                </div>
             </div>
 
             <div className="max-w-7xl mx-auto p-6">
@@ -69,6 +105,9 @@ function Home() {
                             <BookCard
                                 key={book.id}
                                 book={book}
+                                onBookmark={toggleBookmark}
+                                bookmarks={bookmarks}
+                                showBookmark={true}
                             />
                         ))
                     ) : (
@@ -98,6 +137,7 @@ function Home() {
                 >
                     Next
                 </button>
+
 
             </div>
         </>

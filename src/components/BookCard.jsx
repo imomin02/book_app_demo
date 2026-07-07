@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
+function BookCard({ book, onBookmark, bookmarks = [], showBookmark = true }) {
 
-function BookCard({ book }) {
+  const isBookmarked =
+    bookmarks.includes(book.id);
+
   return (
 
-   <div className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden">
+    <div className="bg-white rounded-lg shadow hover:shadow-lg transition duration-300 overflow-hidden">
 
       <Link to={`/book/${book.id}`} className="flex flex-col">
 
@@ -21,14 +25,12 @@ function BookCard({ book }) {
             {book.volumeInfo.title}
           </h3>
 
-
-         <p className="text-xs text-gray-600 mt-2 line-clamp-1">
+          <p className="text-xs text-gray-600 mt-2 line-clamp-1">
             👨 Author:
             <span className="font-medium ml-2">
               {book.volumeInfo.authors?.join(", ") || "N/A"}
             </span>
           </p>
-
 
           <p className="text-xs text-gray-500 mt-1 line-clamp-1">
             🏷 Categories:
@@ -37,8 +39,7 @@ function BookCard({ book }) {
             </span>
           </p>
 
-
-         <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             📅 Published:
             <span className="ml-2">
               {book.volumeInfo.publishedDate || "N/A"}
@@ -48,9 +49,22 @@ function BookCard({ book }) {
         </div>
 
       </Link>
-      
+
+      <div className="p-3 pt-0">
+        {
+          showBookmark && (
+            <button
+              onClick={() => onBookmark(book)}
+              className="text-2xl"
+            >
+              {isBookmarked ? <BsBookmarkFill /> : <BsBookmark />}
+            </button>
+          )
+        }
+      </div>
+
     </div>
-    
+
   );
 }
 

@@ -22,7 +22,6 @@ function Home({ bookmarks, setBookmarks }) {
     useEffect(() => {
         api.get(`/public/books?page=${page}`)
             .then((response) => {
-                console.log(response.data);
                 setBooks(response.data.data.data);
                 setTotalPages(response.data.data.totalPages);
             })
